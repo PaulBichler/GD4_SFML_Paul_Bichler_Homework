@@ -2,6 +2,7 @@
 #include "State.hpp"
 #include "StateID.hpp"
 #include "ResourceIdentifiers.hpp"
+
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
 
@@ -9,10 +10,6 @@
 #include <functional>
 #include <map>
 
-#include "TitleState.hpp"
-#include "GameState.hpp"
-#include "MenuState.hpp"
-#include "PauseState.hpp"
 
 namespace sf
 {
@@ -32,7 +29,7 @@ public:
 
 public:
 	explicit StateStack(State::Context context);
-	template<typename T>
+	template <typename T>
 	void RegisterState(StateID state_id);
 	void Update(sf::Time dt);
 	void Draw();
@@ -45,13 +42,13 @@ public:
 	bool IsEmpty() const;
 
 private:
-	State::Ptr CreateState(StateID state_id);
+	State::Ptr CreateState(StateID stateID);
 	void ApplyPendingChanges();
 
 private:
 	struct PendingChange
 	{
-		explicit PendingChange(Action action, StateID state_id = StateID::kNone);
+		explicit PendingChange(Action action, StateID stateID = StateID::kNone);
 		Action action;
 		StateID state_id;
 	};
@@ -63,7 +60,7 @@ private:
 	std::map<StateID, std::function<State::Ptr()>> m_state_factory;
 };
 
-template<typename T>
+template <typename T>
 void StateStack::RegisterState(StateID state_id)
 {
 	m_state_factory[state_id] = [this]()
@@ -71,3 +68,7 @@ void StateStack::RegisterState(StateID state_id)
 		return State::Ptr(new T(*this, m_context));
 	};
 }
+
+
+
+

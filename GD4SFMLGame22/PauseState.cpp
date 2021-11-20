@@ -1,31 +1,32 @@
 #include "PauseState.hpp"
 #include "ResourceHolder.hpp"
+
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 #include "Utility.hpp"
 
-#include <SFML/Graphics/RenderWindow.hpp>
+
 
 PauseState::PauseState(StateStack& stack, Context context)
-	: State(stack, context),
-	m_options_index(0)
+	: State(stack, context)
+	, m_background_sprite()
+	, m_paused_text()
+	, m_instruction_text()
 {
-	const sf::Font& font = context.fonts->Get(Fonts::kMain);
+	sf::Font& font = context.fonts->Get(Fonts::Main);
+	sf::Vector2f viewSize = context.window->getView().getSize();
 
-	//A simple Pause menu
-	sf::Text resume_option;
-	resume_option.setFont(font);
-	resume_option.setString("Resume");
-	Utility::CenterOrigin(resume_option);
-	resume_option.setPosition(context.window->getView().getSize() / 2.f);
-	m_options.emplace_back(resume_option);
+	m_paused_text.setFont(font);
+	m_paused_text.setString("Game Paused");
+	m_paused_text.setCharacterSize(70);
+	Utility::CentreOrigin(m_paused_text);
+	m_paused_text.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 
-	sf::Text exit_option;
-	exit_option.setFont(font);
-	exit_option.setString("Exit To Main Menu");
-	Utility::CenterOrigin(exit_option);
-	exit_option.setPosition(resume_option.getPosition() + sf::Vector2f(0, 30.f));
-	m_options.emplace_back(exit_option);
-
-	UpdateOptionText();
+	m_instruction_text.setFont(font);
+	m_instruction_text.setString("(Press Backspace to return to the main menu)");
+	Utility::CentreOrigin(m_instruction_text);
+	m_instruction_text.setPosition(0.5f * viewSize.x, 0.6f * viewSize.y);
 }
 
 void PauseState::Draw()
@@ -33,11 +34,16 @@ void PauseState::Draw()
 	sf::RenderWindow& window = *GetContext().window;
 	window.setView(window.getDefaultView());
 
-	for (const sf::Text& text : m_options)
-		window.draw(text);
+	sf::RectangleShape backgroundShape;
+	backgroundShape.setFillColor(sf::Color(0, 0, 0, 150));
+	backgroundShape.setSize(window.getView().getSize());
+
+	window.draw(backgroundShape);
+	window.draw(m_paused_text);
+	window.draw(m_instruction_text);
 }
 
-bool PauseState::Update(sf::Time dt)
+bool PauseState::Update(sf::Time)
 {
 	return false;
 }
@@ -47,43 +53,18 @@ bool PauseState::HandleEvent(const sf::Event& event)
 	if (event.type != sf::Event::KeyPressed)
 		return false;
 
-	if (event.key.code == sf::Keyboard::Return)
+	if (event.key.code == sf::Keyboard::Escape)
 	{
-		if (m_options_index == Options::kResume)
-		{
-			RequestStackPop();
-		}
-		else if (m_options_index == Options::kExit_Game)
-		{
-			//two pops because game state need to be popped too
-			RequestStackPop();
-			RequestStackPop();
-			RequestStackPush(StateID::kMenu);
-		}
+		// Escape pressed, remove itself to return to the game
+		RequestStackPop();
 	}
-	else if (event.key.code == sf::Keyboard::Up)
+
+	if (event.key.code == sf::Keyboard::BackSpace)
 	{
-		m_options_index = (m_options_index == 0) ? m_options.size() - 1 : m_options_index - 1;
-		UpdateOptionText();
-	}
-	else if (event.key.code == sf::Keyboard::Down)
-	{
-		m_options_index = (m_options_index == m_options.size() - 1) ? 0 : m_options_index + 1;
-		UpdateOptionText();
+		// Escape pressed, remove itself to return to the game
+		RequestStackClear();
+		RequestStackPush(StateID::kMenu);
 	}
 
 	return false;
-}
-
-void PauseState::UpdateOptionText()
-{
-	if (m_options.empty())
-		return;
-
-	for (sf::Text& text : m_options)
-	{
-		text.setFillColor(sf::Color::White);
-	}
-
-	m_options[m_options_index].setFillColor(sf::Color::Red);
 }

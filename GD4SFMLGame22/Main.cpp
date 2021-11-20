@@ -1,8 +1,16 @@
+#include <iostream>
 #include "Application.hpp"
 
 int main()
 {
-	Application app;
-	app.Run();
+	try
+	{
+		Application app;
+		app.Run();
+	}
+	catch (std::exception& e)
+	{
+		std::cout << "\nEXCEPTION: " << e.what() << std::endl;
+	}
 }
 

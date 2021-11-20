@@ -4,15 +4,15 @@
 #include <iostream>
 #include <limits>
 
-World::World(sf::RenderWindow& window, TextureHolder& textures)
+World::World(sf::RenderWindow& window)
 	: m_window(window)
 	, m_camera(window.getDefaultView())
-	, m_textures(textures)
+	, m_textures()
 	, m_scenegraph()
 	, m_scene_layers()
-	, m_world_bounds(0.f, 0.f, 8000.f, m_camera.getSize().y)
+	, m_world_bounds(0.f, 0.f, m_camera.getSize().x, 8000)
 	, m_spawn_position(m_camera.getSize().x/2.f, m_world_bounds.height - m_camera.getSize().y /2.f)
-	, m_scrollspeed(50.f)
+	, m_scrollspeed(-50.f)
 	, m_player_aircraft(nullptr)
 {
 	LoadTextures();
@@ -24,7 +24,7 @@ World::World(sf::RenderWindow& window, TextureHolder& textures)
 void World::Update(sf::Time dt)
 {
 	//Scroll the world
-	m_camera.move(m_scrollspeed * dt.asSeconds(), 0);
+	m_camera.move(0, m_scrollspeed * dt.asSeconds());
 
 	m_player_aircraft->SetVelocity(0.f, 0.f);
 
@@ -48,10 +48,9 @@ void World::Draw()
 
 void World::LoadTextures()
 {
-	/*m_textures.Load(Textures::kEagle, "Media/Textures/Eagle.png");
+	m_textures.Load(Textures::kEagle, "Media/Textures/Eagle.png");
 	m_textures.Load(Textures::kRaptor, "Media/Textures/Raptor.png");
 	m_textures.Load(Textures::kDesert, "Media/Textures/Desert.png");
-	m_textures.Load(Textures::kTitleScreen, "Media/Textures/Desert.png");*/
 }
 
 void World::BuildScene()
@@ -78,9 +77,8 @@ void World::BuildScene()
 	//Add player's aircraft
 	std::unique_ptr<Aircraft> leader(new Aircraft(AircraftType::kEagle, m_textures));
 	m_player_aircraft = leader.get();
-	m_player_aircraft->setRotation(90.f);
 	m_player_aircraft->setPosition(m_spawn_position);
-	m_player_aircraft->SetVelocity(m_scrollspeed, 40.f);
+	m_player_aircraft->SetVelocity(40.f, m_scrollspeed);
 	m_scene_layers[static_cast<int>(Layers::kAir)]->AttachChild(std::move(leader));
 
 	//Add two escorts
@@ -121,6 +119,6 @@ void World::AdaptPlayerVelocity()
 		m_player_aircraft->SetVelocity(velocity / std::sqrt(2.f));
 	}
 	//Add scrolling velocity
-	m_player_aircraft->Accelerate(m_scrollspeed, 0.f);
+	m_player_aircraft->Accelerate(0.f, m_scrollspeed);
 }
 

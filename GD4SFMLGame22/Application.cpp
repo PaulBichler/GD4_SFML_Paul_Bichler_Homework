@@ -1,27 +1,30 @@
 #include "Application.hpp"
 
-class TitleState;
-class MenuState;
-class PauseState;
-class GameState;
+#include "State.hpp"
+#include "StateID.hpp"
+#include "TitleState.hpp"
+#include "GameState.hpp"
+#include "MenuState.hpp"
+#include "PauseState.hpp"
 
 const sf::Time Application::kTimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-	: m_window(sf::VideoMode(640, 480), "States", sf::Style::Close),
-	m_stack(State::Context(m_window, m_textures, m_fonts, m_player)),
-	m_statistics_numframes(0)
+:m_window(sf::VideoMode(640, 480), "States", sf::Style::Close)
+, m_stack(State::Context(m_window, m_textures, m_fonts, m_player))
+, m_statistics_numframes(0)
 {
-	m_fonts.Load(Fonts::kMain, "Media/Fonts/Sansation.ttf");
+	m_window.setKeyRepeatEnabled(false);
 
-	m_statistics_text.setFont(m_fonts.Get(Fonts::kMain));
+	m_fonts.Load(Fonts::Main, "Media/Fonts/Sansation.ttf");
+	m_textures.Load(Textures::kTitleScreen, "Media/Textures/TitleScreen.png");
+	m_textures.Load(Textures::kButtonNormal, "Media/Textures/ButtonNormal.png");
+	m_textures.Load(Textures::kButtonSelected, "Media/Textures/ButtonSelected.png");
+	m_textures.Load(Textures::kButtonPressed, "Media/Textures/ButtonPressed.png");
+
+	m_statistics_text.setFont(m_fonts.Get(Fonts::Main));
 	m_statistics_text.setPosition(5.f, 5.f);
-	m_statistics_text.setCharacterSize(10);
-
-	m_textures.Load(Textures::kEagle, "Media/Textures/Eagle.png");
-	m_textures.Load(Textures::kRaptor, "Media/Textures/Raptor.png");
-	m_textures.Load(Textures::kDesert, "Media/Textures/Desert.png");
-	m_textures.Load(Textures::kTitleScreen, "Media/Textures/Desert.png");
+	m_statistics_text.setCharacterSize(10u);
 
 	RegisterStates();
 	m_stack.PushState(StateID::kTitle);
@@ -33,7 +36,7 @@ void Application::Run()
 	sf::Time time_since_last_update = sf::Time::Zero;
 	while (m_window.isOpen())
 	{
-		const sf::Time elapsedTime = clock.restart();
+		sf::Time elapsedTime = clock.restart();
 		time_since_last_update += elapsedTime;
 
 		while (time_since_last_update > kTimePerFrame)
@@ -53,7 +56,6 @@ void Application::ProcessInput()
 	while (m_window.pollEvent(event))
 	{
 		m_stack.HandleEvent(event);
-
 		if (event.type == sf::Event::Closed)
 		{
 			m_window.close();
@@ -98,4 +100,5 @@ void Application::RegisterStates()
 	m_stack.RegisterState<MenuState>(StateID::kMenu);
 	m_stack.RegisterState<GameState>(StateID::kGame);
 	m_stack.RegisterState<PauseState>(StateID::kPause);
+
 }

@@ -6,9 +6,9 @@ class GameState : public State
 {
 public:
 	GameState(StateStack& stack, Context context);
-	virtual void Draw() override;
-	virtual bool Update(sf::Time dt) override;
-	virtual bool HandleEvent(const sf::Event& event) override;
+	virtual void Draw();
+	virtual bool Update(sf::Time dt);
+	virtual bool HandleEvent(const sf::Event& event);
 
 private:
 	World m_world;

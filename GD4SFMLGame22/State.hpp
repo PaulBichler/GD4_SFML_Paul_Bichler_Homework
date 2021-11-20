@@ -18,7 +18,6 @@ class Player;
 class State
 {
 public:
-	virtual ~State() = default;
 	typedef std::unique_ptr<State> Ptr;
 
 	struct Context
@@ -32,7 +31,7 @@ public:
 
 public:
 	State(StateStack& stack, Context context);
-	/*virtual ~State();*/
+	virtual ~State();
 	virtual void Draw() = 0;
 	virtual bool Update(sf::Time dt) = 0;
 	virtual bool HandleEvent(const sf::Event& event) = 0;

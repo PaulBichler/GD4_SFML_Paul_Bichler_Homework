@@ -94,7 +94,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\lib;C:\Users\loanej\dev\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies);sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>sfml-window-d.lib;sfml-graphics-d.lib;sfml-system-d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\lib;C:\Users\loanej\dev\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies);sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>sfml-window-d.lib;sfml-graphics-d.lib;sfml-system-d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,13 +122,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies);sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-window-d.lib;sfml-graphics-d.lib;sfml-system-d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -139,24 +139,29 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies);sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\OneDrive\OneDrive - Dundalk Institute of Technology\Y4_Semester1\MPDP\SFML-2.5.1\lib;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-window-d.lib;sfml-graphics-d.lib;sfml-system-d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Aircraft.cpp" />
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Container.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Label.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PauseState.cpp" />
@@ -173,12 +178,17 @@
     <ClInclude Include="Aircraft.hpp" />
     <ClInclude Include="AircraftType.hpp" />
     <ClInclude Include="Application.hpp" />
+    <ClInclude Include="Button.hpp" />
     <ClInclude Include="Category.hpp" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CommandQueue.hpp" />
+    <ClInclude Include="Component.hpp" />
+    <ClInclude Include="Container.hpp" />
     <ClInclude Include="Entity.hpp" />
     <ClInclude Include="Fonts.hpp" />
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameState.hpp" />
+    <ClInclude Include="Label.hpp" />
     <ClInclude Include="Layers.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="PauseState.hpp" />
