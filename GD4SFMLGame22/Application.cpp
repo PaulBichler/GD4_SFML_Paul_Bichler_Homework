@@ -6,6 +6,7 @@
 #include "GameState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
+#include "SettingsState.hpp"
 
 const sf::Time Application::kTimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -98,6 +99,7 @@ void Application::RegisterStates()
 {
 	m_stack.RegisterState<TitleState>(StateID::kTitle);
 	m_stack.RegisterState<MenuState>(StateID::kMenu);
+	m_stack.RegisterState<SettingsState>(StateID::kSettings);
 	m_stack.RegisterState<GameState>(StateID::kGame);
 	m_stack.RegisterState<PauseState>(StateID::kPause);
 
